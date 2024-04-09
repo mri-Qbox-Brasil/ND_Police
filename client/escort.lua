@@ -91,7 +91,7 @@ exports.ox_target:addGlobalPlayer({
         end,
         onSelect = function(data)
             local coords = GetEntityCoords(cache.ped)
-            local veh = lib.getClosestVehicle(coords, 5.0)
+            local veh = lib.getClosestVehicle(coords, 5.0, true)
             if not DoesEntityExist(veh) or not AreAnyVehicleSeatsFree(veh) then return end
 
             local bones = {"seat_dside_r", "seat_pside_r", "boot"}
