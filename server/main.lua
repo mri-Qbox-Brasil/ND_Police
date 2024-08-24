@@ -133,3 +133,7 @@ RegisterNetEvent("ND_Police:impoundVehicle", function(netId, impoundReclaimPrice
         DeleteEntity(vehicle)
     end
 end)
+
+RegisterNetEvent("ND_Police:removeFromVehicle", function(target)
+    TriggerClientEvent("ND_Police:removeFromVehicle", target)
+end)

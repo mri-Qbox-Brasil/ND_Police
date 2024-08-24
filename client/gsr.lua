@@ -44,7 +44,7 @@ end)
 exports.ox_target:addGlobalPlayer({
     {
         icon = 'fa-solid fa-gun',
-        label = 'GSR Test',
+        label = 'Teste GSR',
         groups = Config.policeGroups,
 	    distance = 1.5,
         onSelect = function(data)
