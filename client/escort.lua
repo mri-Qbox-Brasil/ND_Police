@@ -32,7 +32,7 @@ local function nearbySeatVehicleCheck(ped)
     lastNearbySeatCheck = time
 
     local coords = GetEntityCoords(ped)
-    local veh = lib.getClosestVehicle(coords, 5.0)
+    local veh = lib.getClosestVehicle(coords, 5.0, true)
     nearBySeatStatus = DoesEntityExist(veh) and AreAnyVehicleSeatsFree(veh) and GetVehicleDoorLockStatus(veh) ~= 2
 
     return nearBySeatStatus
@@ -41,10 +41,10 @@ end
 local function nearbySeatRemove(ped)
     local seatRemoveStatus = false
     local coords = GetEntityCoords(ped)
-    local veh = lib.getClosestVehicle(coords, 5.0)
+    local veh = lib.getClosestVehicle(coords, 5.0, true)
 
     if veh and DoesEntityExist(veh) then
-        for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) do
+        for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) - 2 do
             if not IsVehicleSeatFree(veh, i) then
                 seatRemoveStatus = true
                 break
