@@ -44,7 +44,7 @@ local function nearbySeatRemove(ped)
     local veh = lib.getClosestVehicle(coords, 5.0)
 
     if veh and DoesEntityExist(veh) then
-        for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) - 2 do
+        for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) do
             if not IsVehicleSeatFree(veh, i) then
                 seatRemoveStatus = true
                 break
