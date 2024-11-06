@@ -105,6 +105,21 @@ local function toggleHandsUp(status, animType)
         if not handsUpStatus then return end
         TaskPlayAnim(ped, anim.dict, anim.name, blendIn, 8.0, -1, flag, 0, false, false, false)
 
+        Citizen.CreateThread(function()
+            while LocalPlayer.state.handsUp do
+                if IsPedRagdoll(cache.ped) then
+                    toggleHandsUp(false, "huk")
+                    break
+                end
+                if not IsEntityPlayingAnim(cache.ped, anim.dict, anim.name, 3) then
+                    lib.requestAnimDict(anim.dict)
+                    TaskPlayAnim(cache.ped, anim.dict, anim.name, blendIn, 8.0, -1, flag, 0, false, false, false)
+                    RemoveAnimDict(anim.dict)
+                end
+                Wait(1000) 
+            end
+        end)
+
         DisablePlayerFiring(cache.playerId, true)
         lib.disableControls:Add(140, 141, 142, 25, 24, 257)
         LocalPlayer.state.invBusy = true
@@ -547,7 +562,7 @@ exports.ox_target:addGlobalPlayer({
             if handsUpStatus or LocalPlayer.state.invBusy then return end
             local targetPlayer = GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity))
             local state = Player(targetPlayer).state
-            return state.isCuffed or state.handsUp
+            return state.isCuffed or state.handsUp or state.isDead
         end,
         onSelect = function(data)
             local targetPlayer = GetPlayerServerId(NetworkGetPlayerIndexFromPed(data.entity))
