@@ -107,7 +107,7 @@ local function toggleHandsUp(status, animType)
 
         Citizen.CreateThread(function()
             while LocalPlayer.state.handsUp do
-                if IsPedRagdoll(cache.ped) then
+                if IsPedRagdoll(cache.ped) or LocalPlayer.state.isDead then
                     toggleHandsUp(false, "huk")
                     break
                 end
@@ -481,7 +481,7 @@ lib.addKeybind({
     defaultKey = "X",
     onPressed = function(self)
         if not handsUpStatus and cache.vehicle or not handsUpStatus and LocalPlayer.state.blockHandsUp or GetPedParachuteState(cache.ped) > 0 then return end
-
+        if LocalPlayer.state.isDead then return end
         holdingHands = true
         local time = GetCloudTimeAsInt()
 
@@ -562,7 +562,7 @@ exports.ox_target:addGlobalPlayer({
             if handsUpStatus or LocalPlayer.state.invBusy then return end
             local targetPlayer = GetPlayerServerId(NetworkGetPlayerIndexFromPed(entity))
             local state = Player(targetPlayer).state
-            return state.isCuffed or state.handsUp or state.isDead
+            return state.isCuffed or state.handsUp or state.isDead or state.dead
         end,
         onSelect = function(data)
             local targetPlayer = GetPlayerServerId(NetworkGetPlayerIndexFromPed(data.entity))
