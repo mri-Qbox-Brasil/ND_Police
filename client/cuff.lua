@@ -236,7 +236,7 @@ local function setCuffed(enabled, angle, cuffType)
             Wait(0)
             lib.disableControls()
             local vehEntering = GetVehiclePedIsEntering(ped)
-            
+
             if vehEntering ~= 0 then
                 local seat = GetSeatPedIsTryingToEnter(ped)
                 if GetVehicleDoorAngleRatio(vehEntering, seat+1) < 0.2 then
@@ -246,6 +246,7 @@ local function setCuffed(enabled, angle, cuffType)
 
             if veh and preventExitVeh then
                 DisableControlAction(0, 23, true)
+		DisableControlAction(0, 75, true)
             end
         end
     end)
