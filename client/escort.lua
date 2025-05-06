@@ -39,20 +39,32 @@ local function nearbySeatVehicleCheck(ped)
 end
 
 local function nearbySeatRemove(ped)
-    local seatRemoveStatus = false
     local coords = GetEntityCoords(ped)
     local veh = lib.getClosestVehicle(coords, 5.0, true)
 
-    if veh and DoesEntityExist(veh) then
-        for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) do
-            if not IsVehicleSeatFree(veh, i) then
-                seatRemoveStatus = true
-                break
-            end
+    if not veh then return false end
+    if not DoesEntityExist(veh) then return false end
+
+    local playerId = lib.getClosestPlayer(coords, 5.0, true)
+    if not playerId then return false end
+
+    local targetSource = GetPlayerServerId(playerId)
+    if not targetSource then return false end
+
+    local state = Player(targetSource).state
+    if not state then return false end
+
+    local dead = state.dead or state.isDead
+
+    if not dead and not state.isCuffed then return false end
+
+    for i = 1, GetVehicleModelNumberOfSeats(GetEntityModel(veh)) do
+        if not IsVehicleSeatFree(veh, i) then
+            return true
         end
     end
 
-    return seatRemoveStatus
+    return false
 end
 
 exports.ox_target:addGlobalPlayer({
